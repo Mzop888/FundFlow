@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Money</title>
+    <!-- style: link -->
+    <link rel="stylesheet" href="style.css">
+    <!-- script: link -->
+    <script src="script.js"></script>
+    <!-- Anime.js for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+    <!-- html2canvas for screenshots -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <h1 class="logo">daily money</h1>
+            <p class="tagline">simple group payments</p>
+            <form id="adminLoginForm" class="login-form">
+                <h3 style="color: var(--text-muted); font-weight: 500; margin-bottom: 1rem;">Admin Login</h3>
+                <div class="form-group">
+                    <input type="text" id="adminId" class="form-input" placeholder="Admin ID" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="adminPassword" class="form-input" placeholder="Password" required>
+                </div>
+                <button type="submit" class="google-btn">Login as Admin</button>
+            </form>
+            <p style="color: var(--text-muted); margin: 1.5rem 0;">or</p>
+            <form id="userLoginForm" class="login-form">
+                 <h3 style="color: var(--text-muted); font-weight: 500; margin-bottom: 1rem;">User Login</h3>
+                <div class="form-group">
+                    <input type="email" id="userId" class="form-input" placeholder="User Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="userPassword" class="form-input" placeholder="Password" required>
+                </div>
+                <button type="submit" class="google-btn">Login as User</button>
+            </form>
+        </div>
+
+        <!-- Main App Wrapper -->
+        <div class="main-app" id="mainApp">
+            <!-- Navigation (Sidebar on Desktop, Bottom bar on Mobile) -->
+            <div class="button-container" id="mainNav">
+                <button class="button active" onclick="showScreen('dashboard')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 1024 1024" stroke-width="0" fill="currentColor" stroke="currentColor" class="icon"><path d="M946.5 505L560.1 118.8l-25.9-25.9a31.5 31.5 0 0 0-44.4 0L77.5 505a63.9 63.9 0 0 0-18.8 46c.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8a63.6 63.6 0 0 0 18.7-45.3c0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204zm217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z"></path></svg>
+                    <span class="text">Dashboard</span>
+                </button>
+                <button class="button" onclick="showScreen('collections')">
+                    <svg class="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8H5m12 0a1 1 0 0 1 1 1v2.6M17 8l-4-4M5 8a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.6M5 8l4-4 4 4m6 4h-4a2 2 0 1 0 0 4h4a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1Z"/>
+                    </svg>
+                    <span class="text">Collections</span>
+                </button>
+                <button class="button" onclick="showScreen('members')">
+                    <svg class="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
+                    </svg>
+                    <span class="text">Members</span>
+                </button>
+                <button class="button" onclick="showScreen('profile')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" class="icon"><path d="M12 2.5a5.5 5.5 0 0 1 3.096 10.047 9.005 9.005 0 0 1 5.9 8.181.75.75 0 1 1-1.499.044 7.5 7.5 0 0 0-14.993 0 .75.75 0 0 1-1.5-.045 9.005 9.005 0 0 1 5.9-8.18A5.5 5.5 0 0 1 12 2.5ZM8 8a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z"></path></svg>
+                    <span class="text">Profile</span>
+                </button>
+                <button class="button" onclick="logout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" class="icon"><path d="M16 13v-2H7V8l-5 4 5 4v-3z"></path><path d="M20 3h-9c-1.103 0-2 .897-2 2v4h2V5h9v14h-9v-4H9v4c0 1.103.897 2 2 2h9c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2z"></path></svg>
+                    <span class="text">Logout</span>
+                </button>
+            </div>
+
+            <!-- Main Content -->
+            <main>
+                <div class="header">
+                    <div class="header-logo">daily money</div>
+                    <div class="user-avatar" id="userAvatar"></div>
+                </div>
+
+                <div class="content">
+                    <!-- Dashboard Screen -->
+                    <div class="screen active" id="dashboard">
+                        <div id="dashboardContent">
+                            <!-- Populated by JS -->
+                        </div>
+                         <div class="action-grid admin-only">
+                            <button class="btn" onclick="openNewCollectionModal()">➕ New Collection</button>
+                            <button class="btn btn-secondary" onclick="openNewMemberModal()">👤 Add Member</button>
+                        </div>
+                    </div>
+
+                    <!-- Collections Screen -->
+                    <div class="screen" id="collections">
+                        <h3 class="section-title">All Collections</h3>
+                        <div class="member-list" id="collectionsList">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Members Screen -->
+                    <div class="screen" id="members">
+                        <h3 class="section-title">Group Members</h3>
+                        <div class="member-list" id="membersList">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Profile Screen -->
+                    <div class="screen" id="profile">
+                        <h3 class="section-title">My Profile</h3>
+                        <div class="card" id="profile-card">
+                           <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Collection Detail Screen -->
+                    <div class="screen" id="collectionDetail">
+                        <button class="btn btn-secondary" style="width: auto; padding: 0.5rem 1rem; margin-bottom: 1rem;" onclick="showScreen('collections')">← Back</button>
+                        <div id="collectionDetailContent">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- New/Edit Collection Modal -->
+    <div class="modal" id="collectionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="collectionModalTitle">Create New Collection</h3>
+                <button class="close-btn" onclick="closeModal('collectionModal')">&times;</button>
+            </div>
+            <form id="collectionForm">
+                <input type="hidden" id="collectionId">
+                <div class="form-group">
+                    <label for="collectionName" class="form-label">Collection Name</label>
+                    <input type="text" id="collectionName" class="form-input" placeholder="e.g., Office Lunch Fund" required>
+                </div>
+                <div class="form-group">
+                    <label for="collectionAmount" class="form-label">Amount per Member (₹)</label>
+                    <input type="number" id="collectionAmount" class="form-input" placeholder="e.g., 500" required>
+                </div>
+                <div class="form-group">
+                    <label for="collectionFrequency" class="form-label">Frequency</label>
+                    <select id="collectionFrequency" class="form-select">
+                        <option value="one-time" selected>One-time</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentDeadline" class="form-label">Payment Deadline</label>
+                    <input type="datetime-local" id="paymentDeadline" class="form-input">
+                </div>
+                 <div class="form-group">
+                    <label for="goalCompletionDate" class="form-label">Goal Completion Date</label>
+                    <input type="datetime-local" id="goalCompletionDate" class="form-input">
+                </div>
+                 <div class="form-group">
+                    <label for="goalAmount" class="form-label">Total Goal Amount (Auto-calculated)</label>
+                    <input type="number" id="goalAmount" class="form-input" placeholder="Calculated automatically" readonly>
+                </div>
+                <button type="submit" class="btn" id="collectionFormSubmit">Create Collection</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- New/Edit Member Modal -->
+    <div class="modal" id="memberModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="memberModalTitle">Add New Member</h3>
+                <button class="close-btn" onclick="closeModal('memberModal')">&times;</button>
+            </div>
+            <form id="memberForm">
+                <input type="hidden" id="memberId">
+                <div class="form-group">
+                    <label for="memberName" class="form-label">Member Name</label>
+                    <input type="text" id="memberName" class="form-input" placeholder="e.g., Jane Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="memberEmail" class="form-label">Member Email</label>
+                    <input type="email" id="memberEmail" class="form-input" placeholder="e.g., jane.doe@example.com" required>
+                </div>
+                <button type="submit" class="btn" id="memberFormSubmit">Add Member</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Profile</h3>
+                <button class="close-btn" onclick="closeModal('profileModal')">&times;</button>
+            </div>
+            <form id="profileForm">
+                 <div class="profile-picture-container">
+                    <div class="profile-picture-preview" id="profilePicturePreview"></div>
+                    <label for="profilePictureInput" class="btn btn-secondary">Change Picture</label>
+                    <input type="file" id="profilePictureInput" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="profileName" class="form-label">Name</label>
+                    <input type="text" id="profileName" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="profileEmail" class="form-label">Email</label>
+                    <input type="email" id="profileEmail" class="form-input" required>
+                </div>
+                <button type="submit" class="btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Member Detail/Payment Modal -->
+    <div class="modal" id="memberPaymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="paymentModalTitle">Manage Payment</h3>
+                <button class="close-btn" onclick="closeModal('memberPaymentModal')">&times;</button>
+            </div>
+            <div id="paymentModalBody">
+                 <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="confirmationTitle">Are you sure?</h3>
+                <button class="close-btn" onclick="closeModal('confirmationModal')">&times;</button>
+            </div>
+            <p id="confirmationMessage" style="color: var(--text-muted); margin-bottom: 1.5rem;">This action cannot be undone.</p>
+            <div class="action-grid">
+                <button class="btn btn-secondary" onclick="closeModal('confirmationModal')">Cancel</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screenshot Modal -->
+    <div class="modal" id="screenshotModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Today's Collection Summary</h3>
+                <button class="close-btn" onclick="closeModal('screenshotModal')">&times;</button>
+            </div>
+            <div id="screenshot-preview" style="margin-bottom: 1.5rem;"></div>
+            <a href="#" id="downloadScreenshot" class="btn" download="todays-collection.png">Download</a>
+        </div>
+    </div>
+
+     <!-- Gemini Reminder Modal -->
+    <div class="modal" id="reminderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">✨ AI Generated Reminder</h3>
+                <button class="close-btn" onclick="closeModal('reminderModal')">&times;</button>
+            </div>
+            <div id="reminder-text" style="margin-bottom: 1.5rem;">Generating...</div>
+            <button id="copyReminderBtn" class="btn">Copy to Clipboard</button>
+        </div>
+    </div>
+
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+    
+    <!-- Loader -->
+    <div class="loader-container" id="loader">
+        <div class="loader">₹</div>
+    </div>
+</body>
+</html>
